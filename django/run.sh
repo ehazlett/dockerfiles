@@ -13,7 +13,7 @@ if [ ! -z "$SOUTH_ENABLED" ] ; then
 fi
 # find app module
 APP_MODULE_PATH=`find . -name "wsgi.py" | head -1`
-APP_MODULE=`basename $APP_MODULE_PATH .py`
+APP_MODULE=`echo $APP_MODULE_PATH | cut -d '.' -f 2 | sed 's/\//\./g' | cut -c 2-`
 # find static dirs
 STATIC_DIR=`find . -name "static" | head -1`
 

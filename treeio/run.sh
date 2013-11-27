@@ -8,6 +8,11 @@ DB_USER=${DB_USER:-}
 DB_PASS=${DB_PASS:-}
 DB_ENGINE=${DB_ENGINE:-sqlite3}
 DB_NAME=${DB_NAME:-treeio.db}
+SMTP_HOST=${SMTP_HOST:-}
+SMTP_PORT=${SMTP_PORT:-}
+SMTP_USER=${SMTP_USER:-}
+SMTP_PASS=${SMTP_PASS:-}
+SMTP_USE_TLS=${SMTP_USE_TLS:-}
 SKIP_LOAD_DATA=${SKIP_DATA_LOAD:-}
 SUPERVISOR_CONF=/opt/supervisor.conf
 
@@ -26,6 +31,21 @@ cat << EOF > $APP_DIR/core/db/dbsettings.json
     }
 }
 EOF
+
+# smtp settings
+if [ ! -z "${SMTP_HOST}" ] ; then
+    cat << EOF >> $APP_DIR/settings.py
+EMAIL_HOST = '${SMTP_HOST}'
+EMAIL_PORT = ${SMTP_PORT}
+EMAIL_HOST_USER = '${SMTP_USER}'
+EMAIL_HOST_PASSWORD = '${SMTP_PASS}'
+EOF
+fi
+if [ ! -z "${SMTP_USE_TLS}" ] ; then
+    cat << EOF >> $APP_DIR/settings.py
+EMAIL_USE_TLS = True 
+EOF
+fi
 
 # wsgi module
 cat << EOF > $APP_DIR/wsgi.py

@@ -8,6 +8,7 @@ DB_USER=${DB_USER:-}
 DB_PASS=${DB_PASS:-}
 DB_ENGINE=${DB_ENGINE:-sqlite3}
 DB_NAME=${DB_NAME:-treeio.db}
+SKIP_LOAD_DATA=${SKIP_DATA_LOAD:-}
 SUPERVISOR_CONF=/opt/supervisor.conf
 
 mkdir -p $LOG_DIR
@@ -78,6 +79,8 @@ cd $APP_DIR
 # sync, migrate, and loaddata for db
 ./venv/bin/python manage.py syncdb --all --noinput
 ./venv/bin/python manage.py migrate --all --fake --noinput --no-initial-data
-./venv/bin/python manage.py loaddata data.json
+if [ ! -z "$SKIP_LOAD_DATA" ] ; then
+    ./venv/bin/python manage.py loaddata data.json
+fi
 
 supervisord -c $SUPERVISOR_CONF -n

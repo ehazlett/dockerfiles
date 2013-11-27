@@ -3,6 +3,11 @@ Business management platform (http://tree.io)
 
 By default the container will use SQLite for the database backend.
 
+Default Credentials:
+
+Username: admin
+Password: admin
+
 * `docker build -t treeio .`
 * `docker run -i -t -p 8000 treeio`
 

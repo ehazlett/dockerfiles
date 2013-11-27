@@ -18,4 +18,10 @@ Environment Variables
 * `DB_USER`: Database user (optional)
 * `DB_PASS`: Database password (optional)
 * `DB_NAME`: Database name (default: `treeio.db`)
+* `SMTP_HOST`: SMTP Host (optional)
+* `SMTP_PORT`: SMTP Port (optional)
+* `SMTP_USER`: SMTP Username (optional)
+* `SMTP_PASS`: SMTP Password (optional)
+* `SMTP_USE_TLS`: Enable TLS for SMTP (optional)
+* `SMTP_FROM_ADDRESS`: SMTP From address (optional)
 

@@ -5,6 +5,7 @@ run echo "deb-src http://us.archive.ubuntu.com/ubuntu precise main universe mult
 run apt-get update
 run DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 run apt-get install -y wget
+run apt-get install -y sudo
 run wget http://apt.puppetlabs.com/puppetlabs-release-precise.deb -O /tmp/puppetlabs.deb
 run dpkg -i /tmp/puppetlabs.deb
 run apt-get update

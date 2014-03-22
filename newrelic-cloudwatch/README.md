@@ -15,7 +15,7 @@ For example:
 # Checks
 
 ## RPM
-This will use https://github.com/ehazlett/newrelic-rpm-check to check the Requests Per Second for the specified NewRelic Application ID.
+This will use https://github.com/ehazlett/newrelic-rpm-check to check the Requests Per Minute for the specified NewRelic Application ID.
 
 This will check the Application Requests Per Minute and send them to CloudWatch every minute.  You can see https://github.com/ehazlett/newrelic-rpm-check` for details.  The metric namespace is `Apps/<APP_NAME>` where `APP_NAME` has spaces stripped.
 

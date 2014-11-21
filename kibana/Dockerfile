@@ -1,9 +1,5 @@
-FROM debian:jessie
-RUN apt-get update
-ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get install -y nginx-full wget
-RUN wget https://download.elasticsearch.org/kibana/kibana/kibana-3.1.0.tar.gz -O /tmp/kibana.tar.gz && \
-    tar zxf /tmp/kibana.tar.gz && mv kibana-3.1.0/* /usr/share/nginx/html
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+FROM nginx:1
+RUN apt-get update && apt-get install -y wget ca-certificates
+RUN wget https://download.elasticsearch.org/kibana/kibana/kibana-3.1.2.tar.gz -O /tmp/kibana.tar.gz && \
+    cd /tmp && tar zxf kibana.tar.gz && mv kibana-*/* /usr/share/nginx/html/
 EXPOSE 80
-CMD ["nginx", "-c", "/etc/nginx/nginx.conf"]

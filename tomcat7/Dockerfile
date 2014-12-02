@@ -1,4 +1,4 @@
-FROM stackbrew/debian:jessie
+FROM debian:jessie
 MAINTAINER Evan Hazlett <ejhazlett@gmail.com>
 RUN apt-get update && apt-get install -y openjdk-7-jre-headless wget
 RUN (wget -O /tmp/tomcat7.tar.gz http://mirror.cogentco.com/pub/apache/tomcat/tomcat-7/v7.0.57/bin/apache-tomcat-7.0.57.tar.gz && \

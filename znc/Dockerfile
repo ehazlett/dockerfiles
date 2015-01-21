@@ -4,4 +4,4 @@ RUN useradd znc
 USER znc
 EXPOSE 6667
 ENTRYPOINT ["znc"]
-CMD ["-h"]
+CMD ["exec", "znc", "-f"]

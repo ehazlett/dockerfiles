@@ -1,7 +1,14 @@
 FROM debian:jessie
-RUN apt-get update
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get install -y wget openjdk-7-jre-headless git-core unzip apache2-utils mercurial subversion
+RUN apt-get update && apt-get install -y \
+    wget \
+    openjdk-7-jre-headless \
+    git-core \
+    unzip \
+    apache2-utils \
+    mercurial \
+    subversion \
+    make
 RUN wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add -
 RUN echo "deb http://pkg.jenkins-ci.org/debian binary/" > /etc/apt/sources.list.d/jenkins.list
 RUN apt-get update && \
@@ -37,7 +44,7 @@ RUN wget http://s3.amazonaws.com/ec2-downloads/ec2-api-tools.zip -O /tmp/ec2tool
 ENV PATH $PATH:/usr/local/aws/ec2/bin
 ENV EC2_HOME /usr/local/aws/ec2
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64/jre
-RUN wget https://storage.googleapis.com/golang/go1.3.1.linux-amd64.tar.gz -O /tmp/go.tar.gz && \
+RUN wget https://storage.googleapis.com/golang/go1.4.1.linux-amd64.tar.gz -O /tmp/go.tar.gz && \
     tar -C /usr/local -xvf /tmp/go.tar.gz
 ENV GOPATH /gocode
 ENV PATH $PATH:/usr/local/go/bin:/gocode/bin

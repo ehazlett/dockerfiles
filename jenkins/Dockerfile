@@ -50,6 +50,9 @@ ENV GOPATH /gocode
 ENV PATH $PATH:/usr/local/go/bin:/gocode/bin
 RUN go get github.com/tools/godep
 
+RUN (git clone https://github.com/sstephenson/bats.git && \
+    cd bats && ./install.sh /usr/local)
+
 EXPOSE 8080
 EXPOSE 8081
 VOLUME /var/lib/jenkins

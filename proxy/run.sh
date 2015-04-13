@@ -60,6 +60,7 @@ CONF="$CONF
         listen 80;
         location / {
             proxy_pass http://up;
+            proxy_read_timeout 300;
         }
     }
 }

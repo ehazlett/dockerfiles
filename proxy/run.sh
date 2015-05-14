@@ -1,13 +1,13 @@
 #!/bin/bash
 UPSTREAMS=${1:-""}
-WEBSOCKET_BACKENDS=${WEBSOCKET_BACKENDS:-""}
+WEBSOCKET_ENDPOINTS=${WEBSOCKET_ENDPOINTS:-""}
 
 show_usage() {
     echo "Usage: $0 [upstreams]
     The following environment variables are available
     for customization of the backend:
 
-    WEBSOCKET_BACKENDS: space separated list of Websocket backends to upgrade
+    WEBSOCKET_ENDPOINTS: space separated list of Websocket endpoints to upgrade
     "
 }
 
@@ -38,7 +38,7 @@ http {
 
 "
 
-if [ ! -z "$WEBSOCKET_BACKENDS" ]; then
+if [ ! -z "$WEBSOCKET_ENDPOINTS" ]; then
     CONF="$CONF
     map \$http_upgrade \$connection_upgrade {
         default upgrade;
@@ -83,8 +83,8 @@ CONF="$CONF
             send_timeout                600;
         }
 "
-for WS in $WEBSOCKET_BACKENDS; do
-    echo "adding websocket backend: $WS"
+for WS in $WEBSOCKET_ENDPOINTS; do
+    echo "adding websocket endpoint: $WS"
     CONF="$CONF
     location $WS {
         proxy_pass http://up;

@@ -35,6 +35,7 @@ events {
 http {
     include       /etc/nginx/mime.types;
     default_type  application/octet-stream;
+    client_max_body_size 2048M;
 
 "
 

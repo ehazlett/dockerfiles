@@ -1,0 +1,10 @@
+#!/bin/bash
+NAME=cfssl
+REPO=ehazlett/$NAME
+BUNDLE=cfssl.tar
+
+echo "Building $NAME $TAG"
+docker build -t $NAME-build -f Dockerfile.build .
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -w /go/bin $NAME-build tar czf - . > $BUNDLE 
+docker build -t $REPO .
+rm $BUNDLE

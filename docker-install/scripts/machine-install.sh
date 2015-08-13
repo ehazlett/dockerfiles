@@ -15,7 +15,7 @@ set -e
 
 SYS_NAME=$(uname -s)
 SYS_ARCH=$(uname -m)
-INSTALL_PATH=${INSTALL_PATH:-/usr/local/bin/docker-machine}
+INSTALL_PATH=${INSTALL_PATH:-}
 VERSION=${VERSION:-}
 # machine vars
 OS=""
@@ -49,6 +49,14 @@ esac
 BINARY=docker-machine_$OS-$ARCH
 if [ $OS = "windows" ]; then
     BINARY=docker-machine_$OS-$ARCH.exe
+fi
+
+if [ -z "$INSTALL_PATH" ]; then
+    INSTALL_PATH=/usr/local/bin/docker-machine
+
+    if [ $OS = "windows" ]; then
+            INSTALL_PATH=docker-machine.exe
+    fi
 fi
 
 if [ -z "$VERSION" ]; then

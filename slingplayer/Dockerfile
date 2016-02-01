@@ -1,2 +1,2 @@
 FROM nginx:latest
-COPY slingplayer.html /usr/share/html/index.html
+COPY slingplayer.html /usr/share/nginx/html/index.html

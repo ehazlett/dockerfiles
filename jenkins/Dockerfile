@@ -1,5 +1,4 @@
 FROM debian:jessie
-ENV DOCKER_VERSION 1.9.1
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y \
     wget \
@@ -38,7 +37,6 @@ RUN (cd /var/lib/jenkins/plugins && \
     wget --no-check-certificate http://updates.jenkins-ci.org/latest/build-name-setter.hpi)
 COPY config.xml /var/lib/jenkins/config.xml
 ENV JENKINS_HOME /var/lib/jenkins
-RUN wget --no-check-certificate https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION -O /usr/local/bin/docker && chmod +x /usr/local/bin/docker
 RUN wget http://s3.amazonaws.com/ec2-downloads/ec2-api-tools.zip -O /tmp/ec2tools.zip && \
     mkdir /usr/local/aws && unzip -d /usr/local/aws /tmp/ec2tools.zip && rm /tmp/ec2tools.zip && \
     mv /usr/local/aws/ec2-api-tools-* /usr/local/aws/ec2
@@ -47,6 +45,8 @@ ENV EC2_HOME /usr/local/aws/ec2
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64/jre
 RUN wget https://storage.googleapis.com/golang/go1.4.1.linux-amd64.tar.gz -O /tmp/go.tar.gz && \
     tar -C /usr/local -xvf /tmp/go.tar.gz
+ENV DOCKER_VERSION 1.10.2
+RUN wget --no-check-certificate https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION -O /usr/local/bin/docker && chmod +x /usr/local/bin/docker
 ENV GOPATH /gocode
 ENV PATH $PATH:/usr/local/go/bin:/gocode/bin
 RUN go get github.com/tools/godep

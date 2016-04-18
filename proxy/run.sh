@@ -11,6 +11,9 @@ show_usage() {
     for customization of the backend:
 
     WEBSOCKET_ENDPOINTS: space separated list of Websocket endpoints to upgrade
+    AUTH_USER: user name to configure basic auth (default: disabled)
+    AUTH_PASS: user password to configure basic auth (default: disabled)
+    AUTH_REALM: name of authorization realm for auth
     "
 }
 

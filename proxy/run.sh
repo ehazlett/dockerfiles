@@ -1,6 +1,9 @@
 #!/bin/bash
 UPSTREAMS=${1:-""}
 WEBSOCKET_ENDPOINTS=${WEBSOCKET_ENDPOINTS:-""}
+AUTH_USER=${AUTH_USER:-}
+AUTH_PASS=${AUTH_PASS:-}
+AUTH_REALM=${AUTH_REALM:-Private}
 
 show_usage() {
     echo "Usage: $0 [upstreams]
@@ -82,6 +85,19 @@ CONF="$CONF
             proxy_send_timeout          600;
             proxy_read_timeout          600;
             send_timeout                600;
+"
+
+# authorization
+if [ ! -z "$AUTH_USER" ] && [ ! -z "$AUTH_PASS" ]; then
+    echo "configuring authorization"
+    htpasswd -b -c /etc/nginx.users "$AUTH_USER" "$AUTH_PASS"
+    CONF="$CONF
+            auth_basic \"$AUTH_REALM\";
+            auth_basic_user_file /etc/nginx.users;
+"
+fi
+
+CONF="$CONF
         }
 "
 for WS in $WEBSOCKET_ENDPOINTS; do

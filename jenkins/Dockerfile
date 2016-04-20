@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     apache2-utils \
     mercurial \
     subversion \
+    jq \
     build-essential
 RUN wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add -
 RUN echo "deb http://pkg.jenkins-ci.org/debian binary/" > /etc/apt/sources.list.d/jenkins.list

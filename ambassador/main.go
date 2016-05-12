@@ -4,17 +4,16 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"flag"
-	"io"
 	"io/ioutil"
-	"net"
-	"net/http"
-	"net/url"
+	"os"
+	"os/signal"
+	"syscall"
 
 	log "github.com/Sirupsen/logrus"
 )
 
 var (
-	flUpstreamSocket     string
+	flUpstream           string
 	flListenAddr         string
 	flCaPath             string
 	flCertPath           string
@@ -24,7 +23,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&flUpstreamSocket, "u", "", "tcp addr / path to socket")
+	flag.StringVar(&flUpstream, "u", "127.0.0.1:8080", "upstream address")
 	flag.StringVar(&flListenAddr, "l", ":8080", "listen address")
 	flag.StringVar(&flCaPath, "ca", "", "path to ca")
 	flag.StringVar(&flCertPath, "cert", "", "path to certificate")
@@ -41,69 +40,13 @@ func main() {
 		log.SetLevel(log.DebugLevel)
 	}
 
-	if flUpstreamSocket == "" {
+	if flUpstream == "" {
 		log.Fatal("you must specify an upstream")
 	}
 
 	log.Infof("ambassador listening: addr=%s", flListenAddr)
-	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		u, err := url.Parse(flUpstreamSocket)
-		if err != nil {
-			log.Error(err)
-			return
-		}
 
-		scheme := "tcp"
-		host := u.Host
-		// set host to path if using socket
-		if host == "" {
-			host = u.Path
-		}
-
-		if u.Scheme == "unix" {
-			scheme = "unix"
-		}
-
-		log.Debugf("scheme=%s host=%s path=%s", scheme, u.Host, u.Path)
-
-		var c net.Conn
-
-		cl, err := net.Dial(scheme, host)
-		if err != nil {
-			log.Errorf("error connecting to backend: %s", err)
-			return
-		}
-
-		c = cl
-		hj, ok := w.(http.Hijacker)
-		if !ok {
-			http.Error(w, "hijack error", 500)
-			return
-		}
-
-		nc, _, err := hj.Hijack()
-		if err != nil {
-			log.Printf("hijack error: %v", err)
-			return
-		}
-		defer nc.Close()
-		defer c.Close()
-
-		err = r.Write(c)
-		if err != nil {
-			log.Printf("error copying request to target: %v", err)
-			return
-		}
-
-		errc := make(chan error, 2)
-		cp := func(dst io.Writer, src io.Reader) {
-			_, err := io.Copy(dst, src)
-			errc <- err
-		}
-		go cp(c, nc)
-		go cp(nc, c)
-		<-errc
-	})
+	var tlsConfig *tls.Config
 
 	if flCertPath != "" && flKeyPath != "" {
 		log.Infof("Configuring TLS: ca=%s cert=%s key=%s", flCaPath, flCertPath, flKeyPath)
@@ -115,19 +58,24 @@ func main() {
 		caCertPool := x509.NewCertPool()
 		caCertPool.AppendCertsFromPEM(caCert)
 
-		server := &http.Server{
-			Addr:    flListenAddr,
-			Handler: handler,
-			TLSConfig: &tls.Config{
-				// ListenAndServeTLS will wire up the cert/key pairs automatically
-				ClientAuth: tls.RequireAndVerifyClientCert,
-				ClientCAs:  caCertPool,
-			},
+		tlsConfig = &tls.Config{
+			ClientAuth: tls.RequireAndVerifyClientCert,
+			ClientCAs:  caCertPool,
 		}
+	}
 
-		log.Fatal(server.ListenAndServeTLS(flCertPath, flKeyPath))
-	} else {
+	p := Proxy{Listen: flListenAddr, Upstream: flUpstream, TLSConfig: tlsConfig}
 
-		log.Fatal(http.ListenAndServe(flListenAddr, handler))
+	sigs := make(chan os.Signal)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+		<-sigs
+		if err := p.Close(); err != nil {
+			log.Fatal(err.Error())
+		}
+	}()
+
+	if err := p.Run(); err != nil {
+		log.Fatal(err)
 	}
 }

@@ -1,11 +1,11 @@
-FROM alpine:3.3
+FROM alpine:latest
 MAINTAINER Evan Hazlett <ejhazlett@gmail.com>
 
-RUN apk add --update ca-certificates && rm -rf /var/cache/apk/*
+RUN apk add -U bash ca-certificates && rm -rf /var/cache/apk/*
 
 EXPOSE 8080
-ENTRYPOINT ["/bin/run"]
+ENTRYPOINT ["/bin/ambassador"]
+CMD ["-h"]
 ENV PORT 8080
 
 COPY ambassador /bin/ambassador
-COPY ./run /bin/run

@@ -53,17 +53,22 @@ func main() {
 			return
 		}
 
+		scheme := "tcp"
 		host := u.Host
 		// set host to path if using socket
 		if host == "" {
 			host = u.Path
 		}
 
-		log.Debugf("scheme=%s host=%s path=%s", u.Scheme, u.Host, u.Path)
+		if u.Scheme == "unix" {
+			scheme = "unix"
+		}
+
+		log.Debugf("scheme=%s host=%s path=%s", scheme, u.Host, u.Path)
 
 		var c net.Conn
 
-		cl, err := net.Dial(u.Scheme, host)
+		cl, err := net.Dial(scheme, host)
 		if err != nil {
 			log.Errorf("error connecting to backend: %s", err)
 			return

@@ -1,0 +1,32 @@
+#!/bin/bash
+SSL_CERT=${SSL_CERT:-}
+SSL_KEY=${SSL_KEY:-}
+SSL_SKIP_VERIFY=${SSL_SKIP_VERIFY:-}
+
+if [ ! -S /var/run/docker.sock   ] ; then
+    echo "You must run the container with -v /var/run/docker.sock:/var/run/docker.sock"
+    exit 1
+fi
+
+if [ "$1" = "-h"   ] || [ "$1" = "--help"   ]; then
+    echo "Usage:"
+    echo "  By default, it will bind mount to the Docker socket"
+    echo "  To enable TLS, pass the SSL_CA, SSL_CERT and SSL_KEY environment"
+    echo "  variables to the paths of the certificates."
+    echo "  To disable SSL verification, set the SSL_SKIP_VERIFY env var"
+    exit 1
+fi
+
+ARGS="-l :$PORT"
+
+if [ ! -z "$SSL_CA"   ] && [ ! -z "$SSL_CERT"   ] && [ ! -z "$SSL_KEY"   ]; then
+    echo "Using TLS"
+    ARGS="$ARGS -ca $SSL_CA -cert $SSL_CERT -key $SSL_KEY"
+fi
+
+if [ ! -z "$SSL_SKIP_VERIFY"   ]; then
+    ARGS="$ARGS -i"
+fi
+
+echo "Listening on $PORT"
+exec ambassador $ARGS

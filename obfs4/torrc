@@ -1,0 +1,15 @@
+ORPort 443
+Exitpolicy reject *:*
+
+# Act as a bridge relay.
+BridgeRelay 1
+
+# Enable the Extended ORPort
+ExtORPort auto
+
+# Use obfs4proxy to provide the obfs4 protocol.
+ServerTransportPlugin obfs4 exec /usr/local/bin/obfs4proxy managed
+
+# (Optional) Listen on the specified address/port for obfs4 connections as
+# opposed to picking a port automatically.
+ServerTransportListenAddr obfs4 0.0.0.0:443

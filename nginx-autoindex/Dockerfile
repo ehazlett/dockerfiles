@@ -1,2 +1,8 @@
-FROM nginx:1
-RUN sed -i 's/index  index.html index.htm;/index  index.html index.htm;\n        autoindex on;/g' /etc/nginx/conf.d/default.conf
+FROM ubuntu:16.04
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends nginx && \
+    rm -rf /var/lib/apt/cache
+COPY default.conf /etc/nginx/conf.d/default.conf
+COPY run.sh /usr/local/bin/run.sh
+EXPOSE 80
+CMD ["/usr/local/bin/run.sh"]

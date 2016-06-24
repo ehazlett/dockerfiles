@@ -4,5 +4,17 @@ if [ -z "$LICENSE_KEY" ]; then
     exit 1
 fi
 
-nrsysmond-config --set license_key=$LICENSE_KEY
-nrsysmond -F -c /etc/newrelic/nrsysmond.cfg
+CFG=/etc/newrelic/nrsysmond.cfg
+echo "" > $CFG
+
+if [ ! -z "$HOST_ROOT" ]; then
+    echo "host_root=$HOST_ROOT" >> $CFG
+fi
+
+if [ ! -z "$NAME" ]; then
+    echo "hostname=$NAME" >> $CFG
+fi
+
+echo "license_key=$LICENSE_KEY" >> $CFG
+
+nrsysmond -F -c $CFG

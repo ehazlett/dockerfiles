@@ -58,5 +58,5 @@ RUN (git clone https://github.com/sstephenson/bats.git && \
 EXPOSE 8080
 EXPOSE 8081
 VOLUME /var/lib/jenkins
-ENTRYPOINT ["java", "-jar", "/usr/share/jenkins/jenkins.war"]
-CMD []
+COPY slave.sh /usr/local/bin/slave
+CMD ["java", "-jar", "/usr/share/jenkins/jenkins.war"]

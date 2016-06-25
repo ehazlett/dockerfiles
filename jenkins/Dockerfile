@@ -2,6 +2,7 @@ FROM debian:jessie
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y \
     wget \
+    curl \
     openjdk-7-jre-headless \
     git-core \
     unzip \

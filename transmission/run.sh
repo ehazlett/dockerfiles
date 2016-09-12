@@ -4,6 +4,7 @@ PASS=${PASS:-}
 PORT=${PORT:-9091}
 PEER_PORT=${PEER_PORT:-51413}
 DOWNLOAD_DIR=${DOWNLOAD_DIR:-/downloads}
+WATCH_DIR=${WATCH_DIR:-/queue}
 
 mkdir -p /etc/transmission /downloads
 cat << EOF > /etc/transmission/settings.json
@@ -11,6 +12,8 @@ cat << EOF > /etc/transmission/settings.json
     "blocklist-enabled": 1,
     "blocklist-url": "http://john.bitsurge.net/public/biglist.p2p.gz",
     "download-dir": "$DOWNLOAD_DIR",
+    "watch-dir": "$WATCH_DIR",
+    "watch-dir-enabled": true,
     "download-limit": 100,
     "download-limit-enabled": 0,
     "encryption": 1,

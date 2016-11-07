@@ -59,7 +59,12 @@ function run() {
         if [ ! -e "$BASE_DIR/$project" ]; then
             echo "initializing repository: $project"
             mkdir -p $BASE_DIR/$project
-            ln -sf $BASE_DIR/$project $BASE_DIR/$project.git
+            pushd $BASE_DIR/$project > /dev/null
+            pushd ..
+            project_name=$(basename $project)
+            ln -sf $project_name $project_name.git
+            popd > /dev/null
+            popd > /dev/null
             pushd $BASE_DIR/$project > /dev/null
             git init --bare
             popd > /dev/null
@@ -67,7 +72,8 @@ function run() {
     done
 
     echo " -> updating permissions"
-    chown -R git:git $BASE_DIR
+    chown -R git:root $BASE_DIR
+    chmod -R g+rw $BASE_DIR
 
     echo " -> starting ssh"
     mkdir -p /var/run/sshd

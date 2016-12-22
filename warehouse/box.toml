@@ -1,0 +1,24 @@
+id = "shipyard-project"
+package = "shipyard-project.com"
+
+[resources]
+cpus = 1.0
+mem_limit = 64
+
+[process]
+uid = 0
+gid = 0
+args = [
+    "/app"
+]
+
+[services]
+    [services.site]
+    interface = "eth0"
+    port = 8080
+    port_type = "tcp"
+
+    [[services.site.checks]]
+    type = "tcp"
+    interval = 10
+

@@ -1,0 +1,23 @@
+id = "warehouse"
+version = "1.0"
+base = "ubuntu"
+
+[build]
+script = '''
+#!/bin/bash
+apt-get update
+apt-get install -y --no-install-recommends git-core openssh-server
+
+echo "$(which git-shell)" >> /etc/shells
+useradd -M -s $(which git-shell) git
+sed -ri 's/^session\s+required\s+pam_loginuid.so$/session optional pam_loginuid.so/' /etc/pam.d/sshd
+
+cp -f /run/context/run.sh /usr/local/bin/run
+'''
+
+[update]
+script = '''
+#!/bin/bash
+apt-get update
+apt-get upgrade -y
+'''

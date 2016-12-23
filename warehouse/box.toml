@@ -1,24 +1,26 @@
-id = "shipyard-project"
-package = "shipyard-project.com"
+id = "warehouse"
+package = "warehouse"
 
 [resources]
 cpus = 1.0
-mem_limit = 64
+mem_limit = 512
 
 [process]
 uid = 0
 gid = 0
+env = [
+    "PORT=10022"
+]
 args = [
-    "/app"
+    "/usr/local/bin/run"
 ]
 
 [services]
-    [services.site]
+    [services.ssh]
     interface = "eth0"
-    port = 8080
+    port = 10022
     port_type = "tcp"
 
-    [[services.site.checks]]
+    [[services.ssh.checks]]
     type = "tcp"
     interval = 10
-

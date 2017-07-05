@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 CONFIG="${CONFIG:-/iptables.rules}"
+ARGS="${ARGS:-}"
 
 if [ -z "${CONFIG}" ]; then
     echo "Usage: docker run -v /path/to/iptables.rules:/iptables.rules ehazlett/iptables"
@@ -14,7 +15,7 @@ if [ ! -e "${CONFIG}" ]; then
 fi
 
 # check for caps
-iptables -L > /dev/null 2>&1
+iptables -L -n > /dev/null 2>&1
 if [ $? -ne 0 ]; then
     echo "ERR: you must run this container with capability NET_ADMIN (--cap-add NET_ADMIN)"
     exit 1
@@ -27,6 +28,6 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-iptables-restore < ${CONFIG}
+iptables-restore ${ARGS} < ${CONFIG}
 
-iptables -L
+iptables -L -n

@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name=viewport>
+    <title>Application Not Available</title>
+    <link rel="apple-touch-icon" sizes="57x57" href="favicons/apple-touch-icon-57x57.png">
+	  <link rel="apple-touch-icon" sizes="60x60" href="favicons/apple-touch-icon-60x60.png">
+	  <link rel="apple-touch-icon" sizes="72x72" href="favicons/apple-touch-icon-72x72.png">
+	  <link rel="apple-touch-icon" sizes="76x76" href="favicons/apple-touch-icon-76x76.png">
+	  <link rel="apple-touch-icon" sizes="114x114" href="favicons/apple-touch-icon-114x114.png">
+	  <link rel="apple-touch-icon" sizes="120x120" href="favicons/apple-touch-icon-120x120.png">
+	  <link rel="icon" type="image/png" href="favicons/favicon-32x32.png" sizes="32x32">
+	  <link rel="icon" type="image/png" href="favicons/favicon-96x96.png" sizes="96x96">
+	  <link rel="icon" type="image/png" href="favicons/favicon-16x16.png" sizes="16x16">
+	  <link rel="manifest" href="favicons/manifest.json">
+    <link rel="shortcut icon" href="favicons/favicon.ico"/>
+    <style>
+html, body {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  background-color: #F7F8FB;
+  height: 100%;
+  -webkit-font-smoothing: antialiased; }
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; }
+
+.message {
+  text-align: center;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px 20px;
+  max-width: 450px; }
+
+.message__title {
+  font-size: 22px;
+  font-weight: 100;
+  margin-top: 15px;
+  color: #fefefe;
+  margin-bottom: 8px; }
+
+p {
+  -webkit-margin-after: 0px;
+  -webkit-margin-before: 0px;
+  font-size: 15px;
+  color: #7F828B;
+  line-height: 21px;
+  margin-bottom: 4px; }
+
+.btn {
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #fefefe;
+  border: 1px solid #fefefe; }
+
+body.friendly {
+  background-image: linear-gradient(-120deg,rgba(245,33,33,0) 87%,rgba(255,255,255,.08) 15%),linear-gradient(-110deg,rgba(27,0,255,0) 85%,rgba(255,255,255,.08) 15%),linear-gradient(-103deg,rgba(255,33,33,0) 84%,rgba(255,255,255,.08) 15%),radial-gradient(circle,#0087C9 0,#0087C9 100%);
+
+body.friendly .message__title {
+  color: #fff; }
+
+body.friendly p {
+  color: rgba(255, 255, 255, 0.6); }
+
+body.friendly .app-logo, body.friendly .app-icon {
+  fill: rgba(255, 255, 255, 0.9); }
+
+body.friendly .info {
+  fill: rgba(255, 255, 255, 0.9); }
+
+body.friendly .btn {
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.9); }
+
+.info_area {
+  position: fixed;
+  right: 12px;
+  bottom: 12px; }
+
+.logo {
+  position: fixed;
+  left: 12px;
+  bottom: 12px; }
+</style>
+<base target=_parent />
+</head>
+<body class=friendly>
+  <div class=logo> <img src="moby.svg" width="128" /></div>
+  <div class=spacer></div>
+  <div class=message>
+    <div class=message__title>The application you are trying to access is not available.</div> <a href="https://beta.docs.docker.com/datacenter/ucp/2.2/guides/interlock/use-interlock/" class=btn>Deploy an Application</a> </div>
+  </div>
+</body>
+</html>

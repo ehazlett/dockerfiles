@@ -5,5 +5,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y curl ca-
     tar zxf /tmp/docker.tgz -C /tmp && \
     mv /tmp/docker/* /usr/local/bin && \
     rm -rf /tmp/docker*
+RUN curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && \
+    chmod +x /usr/local/bin/docker-compose
 ENTRYPOINT ["/usr/local/bin/dockerd"]
 CMD ["-v"]

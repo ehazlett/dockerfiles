@@ -1,9 +1,11 @@
-FROM debian:jessie
+FROM debian:sid
 ENV DEBIAN_FRONTEND noninteractive
+ARG DOCKER_ARCH=x86_64
+ARG DOCKER_VERSION=18.05.0-ce
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
-    openjdk-7-jre-headless \
+    openjdk-8-jre-headless \
     git-core \
     unzip \
     apache2-utils \
@@ -22,7 +24,6 @@ RUN (cd /var/lib/jenkins/plugins && \
     wget --no-check-certificate http://updates.jenkins-ci.org/latest/instant-messaging.hpi && \
     wget --no-check-certificate http://updates.jenkins-ci.org/latest/ircbot.hpi && \
     wget --no-check-certificate http://updates.jenkins-ci.org/latest/postbuild-task.hpi && \
-    wget --no-check-certificate http://updates.jenkins-ci.org/latest/copy-to-slave.hpi && \
     wget --no-check-certificate http://updates.jenkins-ci.org/latest/credentials.hpi && \
     wget --no-check-certificate http://updates.jenkins-ci.org/latest/ssh-credentials.hpi && \
     wget --no-check-certificate http://updates.jenkins-ci.org/latest/ssh-agent.hpi && \
@@ -45,16 +46,12 @@ RUN wget http://s3.amazonaws.com/ec2-downloads/ec2-api-tools.zip -O /tmp/ec2tool
 ENV PATH $PATH:/usr/local/aws/ec2/bin
 ENV EC2_HOME /usr/local/aws/ec2
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64/jre
-RUN wget https://storage.googleapis.com/golang/go1.4.1.linux-amd64.tar.gz -O /tmp/go.tar.gz && \
+RUN wget https://storage.googleapis.com/golang/go1.10.1.linux-amd64.tar.gz -O /tmp/go.tar.gz && \
     tar -C /usr/local -xvf /tmp/go.tar.gz
-ENV DOCKER_VERSION 1.10.2
-RUN wget --no-check-certificate https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION -O /usr/local/bin/docker && chmod +x /usr/local/bin/docker
-ENV GOPATH /gocode
-ENV PATH $PATH:/usr/local/go/bin:/gocode/bin
-RUN go get github.com/tools/godep
-
-RUN (git clone https://github.com/sstephenson/bats.git && \
-    cd bats && ./install.sh /usr/local)
+ENV PATH $PATH:/usr/local/go/bin
+RUN go get -u golang.org/x/lint/golint
+RUN wget --no-check-certificate https://download.docker.com/linux/static/edge/${DOCKER_ARCH}/docker-$DOCKER_VERSION.tgz -O /tmp/docker.tgz && \
+	tar zxf /tmp/docker.tgz --strip-components=1 -C /usr/local/bin && chmod +x /usr/local/bin/docker
 
 EXPOSE 8080
 EXPOSE 8081

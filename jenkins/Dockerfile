@@ -2,6 +2,7 @@ FROM debian:sid
 ENV DEBIAN_FRONTEND noninteractive
 ARG DOCKER_ARCH=x86_64
 ARG DOCKER_VERSION=18.05.0-ce
+ARG ARCH=amd64
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
@@ -46,7 +47,7 @@ RUN wget http://s3.amazonaws.com/ec2-downloads/ec2-api-tools.zip -O /tmp/ec2tool
 ENV PATH $PATH:/usr/local/aws/ec2/bin
 ENV EC2_HOME /usr/local/aws/ec2
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64/jre
-RUN wget https://storage.googleapis.com/golang/go1.10.1.linux-amd64.tar.gz -O /tmp/go.tar.gz && \
+RUN wget https://storage.googleapis.com/golang/go1.10.1.linux-${ARCH}.tar.gz -O /tmp/go.tar.gz && \
     tar -C /usr/local -xvf /tmp/go.tar.gz
 ENV PATH $PATH:/usr/local/go/bin
 RUN go get -u golang.org/x/lint/golint

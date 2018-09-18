@@ -1,5 +1,5 @@
 FROM openjdk:8-jre
-RUN apt-get update && apt-get install -y --no-install-recommends curl apt-transport-https git make ssh
+RUN apt-get update && apt-get install -y --no-install-recommends curl apt-transport-https git make ssh bzr
 RUN echo "deb https://download.gocd.org /" | tee /etc/apt/sources.list.d/gocd.list
 RUN curl https://download.gocd.org/GOCD-GPG-KEY.asc | apt-key add - && apt-get update
 RUN apt-get install -y go-server go-agent

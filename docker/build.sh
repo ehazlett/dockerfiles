@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-VERSIONS=${VERSIONS:-"17.06.2-ce 17.09.0-ce 18.02.0-ce 18.03.0-ce 18.06.0-ce"}
+VERSIONS=${VERSIONS:-"17.06.2-ce 17.09.0-ce 18.02.0-ce 18.03.0-ce 18.06.1-ce"}
 
 for ver in $VERSIONS; do
     echo " -> Building ${ver}"

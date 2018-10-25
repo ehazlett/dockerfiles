@@ -14,7 +14,7 @@ COPY --from=build /go/src/github.com/kubernetes/kubernetes/_output/local/bin/lin
 ENTRYPOINT ["/kubelet"]
 
 FROM microsoft/nanoserver:latest as release-img-windows
-COPY --from=build /go/src/github.com/kubernetes/kubernetes/_output/local/bin/windows/amd64/kubelet.exe /bin/
-ENTRYPOINT ["\\kubelet.exe"]
+COPY --from=build /go/src/github.com/kubernetes/kubernetes/_output/local/bin/windows/amd64/kubelet.exe /
+ENTRYPOINT ["C:\\Files\\kubelet.exe"]
 
 FROM release-img-$TARGETOS

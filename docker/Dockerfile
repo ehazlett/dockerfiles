@@ -10,8 +10,9 @@ RUN git clone https://github.com/containerd/containerd /go/src/github.com/contai
 
 FROM ubuntu:16.04
 ARG VERSION
+ARG DOCKER_URL
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y curl ca-certificates git iptables module-init-tools
-RUN curl -sSL https://download.docker.com/linux/static/edge/x86_64/docker-${VERSION}.tgz -o /tmp/docker.tgz && \
+RUN curl -sSL ${DOCKER_URL} -o /tmp/docker.tgz && \
     tar zxf /tmp/docker.tgz -C /tmp && \
     mv /tmp/docker/* /usr/local/bin && \
     rm -rf /tmp/docker*

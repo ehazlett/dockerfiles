@@ -1,0 +1,68 @@
+#!ipxe
+
+set menu-timeout 10000
+set submenu-timeout ${menu-timeout}
+isset ${menu-default} || set menu-default exit
+
+cpuid --ext 29 && set arch x64 || set arch x86
+cpuid --ext 29 && set archl amd64 || set archl i386
+
+:start
+menu Netboot
+item --key n netboot	  Netboot.xyz
+item --key u ubuntu	  Ubuntu 18.10 Installer
+item --key c config       Configure
+item shell                iPXE shell
+item reboot               Reboot
+item
+item --key x exit         Exit iPXE and continue BIOS boot
+choose --timeout ${menu-timeout} --default ${menu-default} selected || goto cancel
+set menu-timeout 0
+goto ${selected}
+
+:cancel
+echo You cancelled the menu, dropping you to a shell
+
+:shell
+echo Type 'exit' to get the back to the menu
+shell
+set menu-timeout 0
+set submenu-timeout 0
+goto start
+
+:failed
+echo Booting failed, dropping to shell
+goto shell
+
+:reboot
+reboot
+
+:exit
+exit
+
+:config
+config
+goto start
+
+:back
+set submenu-timeout 0
+clear submenu-default
+goto start
+
+:terra
+initrd ${base-url}/terra/terra.iso
+chain ${base-url}/memdisk iso
+boot || goto failed
+goto start
+
+:ubuntu
+echo Booting Ubuntu 18.10
+set install_params priority=low
+kernel ${base-url}/ubuntu-18.10/linux
+initrd ${base-url}/ubuntu-18.10/initrd.gz
+boot || goto failed
+goto start
+
+:netboot
+chain --autofree http://boot.netboot.xyz || goto failed
+goto start

@@ -14,9 +14,7 @@ RUN git clone https://git.ipxe.org/ipxe.git && \
 	cd ipxe/src && \
 	make bin/undionly.kpxe
 
-FROM stellarproject/iso:latest as terra
 FROM alpine:latest
-ARG TERRA_VERSION
 RUN apk add -U syslinux dnsmasq curl python
 RUN mkdir /tftp && \
 	cp /usr/share/syslinux/pxelinux.0 /tftp/ && \
@@ -33,8 +31,6 @@ RUN curl -sSL http://archive.ubuntu.com/ubuntu/dists/cosmic-updates/main/install
 	mkdir -p /tftp/ubuntu-18.10 && \
 	cp ./ubuntu-installer/amd64/linux /tftp/ubuntu-18.10/linux && \
 	cp ./ubuntu-installer/amd64/initrd.gz /tftp/ubuntu-18.10/initrd.gz
-# terra
-COPY --from=terra /terra.iso /tftp/terra/terra.iso
 # ipxe
 COPY --from=ipxe /ipxe/src/bin/undionly.kpxe /tftp/undionly.kpxe
 ADD boot.ipxe /tftp/boot.ipxe

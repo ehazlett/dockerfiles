@@ -11,6 +11,7 @@ cpuid --ext 29 && set archl amd64 || set archl i386
 menu Netboot
 item --key n netboot	  Netboot.xyz
 item --key u ubuntu	  Ubuntu 18.10 Installer
+item --key t terra	  Terra
 item --key c config       Configure
 item shell                iPXE shell
 item reboot               Reboot
@@ -57,8 +58,7 @@ goto start
 
 :ubuntu
 echo Booting Ubuntu 18.10
-set install_params priority=low
-kernel ${base-url}/ubuntu-18.10/linux
+kernel ${base-url}/ubuntu-18.10/linux priority=low
 initrd ${base-url}/ubuntu-18.10/initrd.gz
 boot || goto failed
 goto start

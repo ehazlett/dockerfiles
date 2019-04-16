@@ -14,7 +14,7 @@ RUN git clone https://git.ipxe.org/ipxe.git && \
 	cd ipxe/src && \
 	make bin/undionly.kpxe
 
-FROM stellarproject/iso:latest as terra
+FROM ehazlett/terra-iso:latest as terra
 FROM alpine:latest
 ARG TERRA_VERSION
 RUN apk add -U syslinux dnsmasq curl python

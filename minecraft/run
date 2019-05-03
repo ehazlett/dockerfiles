@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ ! -f /data/minecraft_server.jar  ]
 then
-    curl "https://s3.amazonaws.com/Minecraft.Download/versions/${VERSION}/minecraft_server.${VERSION}.jar" -o /data/minecraft_server.jar
+    curl -sSL https://launcher.mojang.com/v1/objects/f1a0073671057f01aa843443fef34330281333ce/server.jar -o /data/minecraft_server.jar
 fi
 
 if [ ! -f /data/eula.txt  ]

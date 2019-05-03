@@ -11,7 +11,6 @@ RUN apk add -U \
           mysql-client \
         rm -rf /var/cache/apk/*
 ENV EULA true
-ENV VERSION 1.12
 COPY run /bin
 EXPOSE 25565
 VOLUME ["/data"]

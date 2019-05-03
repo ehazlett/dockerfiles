@@ -33,6 +33,11 @@ RUN curl -sSL http://archive.ubuntu.com/ubuntu/dists/cosmic-updates/main/install
 	mkdir -p /tftp/ubuntu-18.10 && \
 	cp ./ubuntu-installer/amd64/linux /tftp/ubuntu-18.10/linux && \
 	cp ./ubuntu-installer/amd64/initrd.gz /tftp/ubuntu-18.10/initrd.gz
+# run
+ADD run.sh /usr/local/bin/run.sh
+CMD ["/usr/local/bin/run.sh"]
+
+FROM scratch
 # terra
 COPY --from=terra /terra.iso /tftp/terra/terra.iso
 # ipxe
@@ -40,6 +45,3 @@ COPY --from=ipxe /ipxe/src/bin/undionly.kpxe /tftp/undionly.kpxe
 ADD boot.ipxe /tftp/boot.ipxe
 ADD boot.ipxe.cfg /tftp/boot.ipxe.cfg
 ADD menu.ipxe /tftp/menu.ipxe
-# run
-ADD run.sh /usr/local/bin/run.sh
-CMD ["/usr/local/bin/run.sh"]

@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-VERSIONS=${VERSIONS:-"17.06.2-ce 17.09.0-ce 18.02.0-ce 18.03.0-ce 18.06.1-ce 18.09.0"}
+VERSIONS=${VERSIONS:-"17.06.2-ce 17.09.0-ce 18.02.0-ce 18.03.0-ce 18.06.1-ce 18.09.0 19.03.1"}
 DEFAULT_BASE="https://download.docker.com/linux/static/edge/x86_64"
 
 for ver in $VERSIONS; do

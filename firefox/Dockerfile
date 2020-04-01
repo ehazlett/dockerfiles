@@ -1,23 +1,16 @@
-FROM debian:sid
-RUN apt-get update && apt-get install -y \
-    dirmngr \
-    gnupg \
-    --no-install-recommends \
-    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 0AB215679C571D1C8325275B9BDB3D89CE49EC21 \
-    && echo "deb http://ppa.launchpad.net/mozillateam/firefox-next/ubuntu wily main" >> /etc/apt/sources.list.d/firefox.list \
-    && echo "deb http://ftp.us.debian.org/debian sid contrib" >> /etc/apt/sources.list.d/contrib.list \
-    && apt-get update && apt-get install -y \
-    ca-certificates \
-    firefox \
-    hicolor-icon-theme \
-    libasound2 \
-    libgl1-mesa-dri \
-    libgl1-mesa-glx \
-    flashplugin-nonfree \
-    --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
+FROM ubuntu:18.04
 
-ENV LANG en-US
-COPY local.conf /etc/fonts/local.conf
-ENV PROFILE_NAME default
-ENTRYPOINT [ "/usr/bin/firefox", "-p", "$PROFILE_NAME" ]
+RUN apt-get update && apt-get install -y firefox
+
+RUN export uid=1000 gid=1000 && \
+    mkdir -p /home/developer && \
+    echo "developer:x:${uid}:${gid}:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
+    echo "developer:x:${uid}:" >> /etc/group && \
+    mkdir -p /etc/sudoers.d && \
+    echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
+    chmod 0440 /etc/sudoers.d/developer && \
+    chown ${uid}:${gid} -R /home/developer
+
+USER developer
+ENV HOME /home/developer
+CMD /usr/bin/firefox

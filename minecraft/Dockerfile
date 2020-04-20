@@ -10,8 +10,10 @@ RUN apk add -U \
           jq \
           mysql-client \
         rm -rf /var/cache/apk/*
+RUN mkdir -p /opt/minecraft && \
+	echo "eula=true" > /opt/minecraft/eula.txt
+RUN curl -sSL https://launcher.mojang.com/v1/objects/bb2b6b1aefcd70dfd1892149ac3a215f6c636b07/server.jar -o /usr/local/bin/server.jar
 ENV EULA true
-COPY run /bin
 EXPOSE 25565
-VOLUME ["/data"]
-CMD ["/bin/run"]
+WORKDIR /opt/minecraft
+CMD ["java","-Xmx2G","-jar","/usr/local/bin/server.jar","nogui"]
